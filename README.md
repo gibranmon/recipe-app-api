@@ -14,4 +14,4 @@ docker-compose run --rm app sh -c "flake8"
  docker-compose run --rm app sh -c "django-admin startproject app ."
 
 # Test push - Add authentication token to push changes
-git remote set-url origin https://<TOKEN>@github.com/username/repository.git
+git remote set-url origin https://[TOKEN]@github.com/username/repository.git
