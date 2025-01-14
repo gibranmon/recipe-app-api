@@ -10,6 +10,7 @@ CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
 ME_URL = reverse('user:me')
 
+
 def create_user(**params):
   """Create and return a new user"""
   return get_user_model().objects.create_user(**params)
@@ -66,7 +67,7 @@ class PublicUserApiTests(TestCase):
       email=payload['email']
     ).exists()
     self.assertFalse(user_exists)
-  
+
   def test_create_token_for_user(self):
     """Test generates token for valid credentials"""
     user_details = {
@@ -74,7 +75,7 @@ class PublicUserApiTests(TestCase):
       'email': 'test@example.com',
       'password': 'test-user-password123',
     }
-    
+
     create_user(**user_details)
 
     payload = {
@@ -111,14 +112,15 @@ class PublicUserApiTests(TestCase):
     res = self.client.get(ME_URL)
 
     self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
-    
+
+
 class PrivateUserApiTests(TestCase):
   """Test API requests that require authentication"""
   def setUp(self):
     self.user = create_user(
-      email = 'test@example.com',
-      password = 'password123',
-      name = 'test name'
+      email='test@example.com',
+      password='password123',
+      name='test name'
     )
     self.client = APIClient()
     self.client.force_authenticate(user=self.user)
@@ -135,15 +137,15 @@ class PrivateUserApiTests(TestCase):
   def test_post_me_not_allowed(self):
     """Test POST is not allowed for the me endpoint"""
     res = self.client.post(ME_URL, {})
-    
+
     self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-  
+
   def test_update_user_profile(self):
     """Test updating the user profile for the authenticated user"""
     payload = {'name': 'test name', 'password': 'password123'}
-    
+
     res = self.client.patch(ME_URL, payload)
-    
+
     self.user.refresh_from_db()
     self.assertEqual(self.user.name, payload['name'])
     self.assertTrue(self.user.check_password(payload['password']))
