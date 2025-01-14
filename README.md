@@ -7,6 +7,9 @@ docker-compose run --rm app sh -c "flake8"
 # Create django project inside docker
  docker-compose run --rm app sh -c "django-admin startproject app ."
 
+# Create a new app inside a Django project
+python manage.py startapp [NAME_APP]
+
 # Test push - Add authentication token to push changes
 git remote set-url origin https://[TOKEN]@github.com/username/repository.git
 
