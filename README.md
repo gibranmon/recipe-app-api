@@ -1,6 +1,9 @@
 # recipe-app-api
 Recipe API Project
 
+# Start a new django project
+django-admin startproject app .
+
 # Run linter
 docker-compose run --rm app sh -c "flake8"
 
