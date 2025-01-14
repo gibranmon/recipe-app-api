@@ -80,8 +80,8 @@ class PrivateRecipeApiTests(TestCase):
       'other@example.com',
       'password123'
     )
-    create_recipe(self=other_user)
-    create_recipe(self=self.user)
+    create_recipe(user=other_user)
+    create_recipe(user=self.user)
 
     res = self.client.get(RECIPES_URL)
 
@@ -94,10 +94,10 @@ class PrivateRecipeApiTests(TestCase):
   def test_get_recipe_detail(self):
     """Test get recipe detail"""
     recipe = create_recipe(user=self.user)
-    
+
     url = detail_url(recipe_id=recipe.id)
     res = self.client.get(url)
-    
+
     serializer = RecipeDetailSerializer(recipe)
-    
+
     self.assertEqual(res.data, serializer.data)
